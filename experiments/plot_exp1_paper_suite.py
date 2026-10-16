@@ -1180,7 +1180,7 @@ def _plot_rank_panel(ax, ll: np.ndarray, k_stats: dict[str, float], title: str) 
     txt = (
         rf"$\hat{{\epsilon}}={k_stats['eps_mean']:.3f}$"
         + "\n"
-        + rf"$\epsilon_{{95\%CI}}=[{k_stats['eps_low']:.3f}, {k_stats['eps_high']:.3f}]$"
+        + rf"$\epsilon_{{95\%\mathrm{{CrI}}}}=[{k_stats['eps_low']:.3f}, {k_stats['eps_high']:.3f}]$"
         + "\n"
         + rf"$k_{{50}}={k_stats['k_med']}$, $k_{{95}}={k_stats['k_high']}$"
     )

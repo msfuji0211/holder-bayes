@@ -1050,7 +1050,7 @@ def _plot_rank_panel(ax, ll: np.ndarray, k_stats: dict[str, float], title: str) 
         + "\n"
         + rf"$K_{{\rm central}}={k_central}$"
         + "\n"
-        + rf"$95\%~\mathrm{{CI~for~}}K=[{k_low},{k_high}]$"
+        + rf"$95\%~\mathrm{{CrI~for~}}K=[{k_low},{k_high}]$"
     )
     ax.text(
         0.98, 0.58, txt, transform=ax.transAxes, va="center", ha="right", fontsize=LABEL_FONTSIZE,
@@ -1888,7 +1888,7 @@ Left: model-parameter posterior (H-B vs Standard Bayes). Right: contamination-pr
 Top-left: simulation target-parameter error. Top-right: simulation recovery of $\\epsilon_0$ (H-B only). Bottom-left: regression clean-test RMSE. Bottom-right: regression recovery of $\\epsilon_0$ (H-B only). Ranking-only AUPRC is Appendix-only.
 
 ## Fig.3 Posterior-guided auditing: how many and which observations (2x2)
-Left: inferred audit budget from the epsilon posterior (central $K$ and 95\\% CI for $K$, matching the shaded interval) along a compatibility ranking. Right: FoD scores (simulation scatter; regression fitted-value/residual). The accompanying CSV evaluates H-B FoD AUPRC and precision/recall/F1 at $K_{{\\rm central}}=\\mathrm{{round}}(\\mathbb{{E}}[K])$.
+Left: inferred audit budget from the epsilon posterior (central $K$ and 95\\% posterior interval for $K$, matching the shaded interval) along a compatibility ranking. Right: FoD scores (simulation scatter; regression fitted-value/residual). The accompanying CSV evaluates H-B FoD AUPRC and precision/recall/F1 at $K_{{\\rm central}}=\\mathrm{{round}}(\\mathbb{{E}}[K])$.
 """
     caption_path.write_text(caption_text, encoding="utf-8")
 
