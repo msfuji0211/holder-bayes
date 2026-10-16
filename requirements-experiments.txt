@@ -1,0 +1,11 @@
+# Recorded original top-level packages; use a separate Python 3.12.8 environment.
+# The original transitive package lock was not shared.
+numpy==1.26.4
+scipy==1.16.1
+pandas==2.2.3
+matplotlib==3.10.1
+scikit-learn==1.5.2
+jax==0.7.1
+jaxlib==0.7.1
+blackjax==1.2.5
+arviz==0.22.0

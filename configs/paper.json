@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "gammas": [
+    0.1,
+    0.5,
+    1.0
+  ],
+  "density_eps": [
+    0,
+    0.1,
+    0.2,
+    0.3,
+    0.4
+  ],
+  "regression_eps": [
+    0,
+    0.05,
+    0.1,
+    0.2,
+    0.3,
+    0.4
+  ],
+  "realdata_eps": [
+    0,
+    0.2
+  ],
+  "datasets": [
+    "cal_housing",
+    "pumadyn32fh",
+    "kin8nm"
+  ],
+  "synthetic_replicates": 30,
+  "realdata_replicates": 5,
+  "chains": 4,
+  "warmup": 4000,
+  "draws": 4000,
+  "repair_warmup": 4000,
+  "repair_draws": 8000,
+  "target_accept": 0.99,
+  "init_step": 0.1,
+  "seed": 42,
+  "student_t_df": 4.0,
+  "density_gamma": 0.5,
+  "regression_gamma": 1.0,
+  "realdata_gamma": 0.5,
+  "primary_all_five_splits": true,
+  "sensitivity_excluded_split": 2,
+  "sensitivity_is_post_hoc": true
+}

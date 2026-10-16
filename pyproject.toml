@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "holder-bayes"
+version = "0.1.0"
+description = "Hölder–Bayes inference and probabilistic outlier auditing"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = ["numpy>=1.26,<3", "scipy>=1.11,<2"]
+keywords = ["Bayesian inference", "robust statistics", "outlier detection", "density power divergence"]
+classifiers = ["Programming Language :: Python :: 3", "Topic :: Scientific/Engineering :: Mathematics"]
+
+[project.optional-dependencies]
+inference = ["numpy==1.26.4", "scipy==1.16.1", "jax==0.7.1", "jaxlib==0.7.1", "blackjax==1.2.5", "arviz==0.22.0"]
+experiments = ["numpy==1.26.4", "scipy==1.16.1", "jax==0.7.1", "jaxlib==0.7.1", "blackjax==1.2.5", "arviz==0.22.0", "pandas==2.2.3", "matplotlib==3.10.1", "scikit-learn==1.5.2"]
+
+test = ["pandas>=2.2,<3", "matplotlib>=3.10,<4"]
+
+[project.scripts]
+hbayes = "hbayes.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["hbayes*"]

@@ -1,0 +1,40 @@
+name: Source package checks
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  numerical:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      MPLBACKEND: Agg
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12.8'
+      - run: python -m pip install -e ".[test]"
+      - run: python -m hbayes check
+      - run: python -m hbayes paper run --download-data --dry-run
+      - run: python -m unittest discover -s tests -v
+  inference:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      HBAYES_TEST_MCMC: '1'
+      MPLBACKEND: Agg
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12.8'
+      - run: python -m pip install -e ".[experiments]"
+      - run: python -m unittest discover -s tests -p test_inference_smoke.py -v
+      # Short fits check integration only; this does not run the paper grid.
