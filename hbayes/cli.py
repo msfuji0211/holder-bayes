@@ -21,7 +21,7 @@ def main(argv=None):
     paper=groups.add_parser("paper",help="Run and inspect the paper experiments")
     actions=paper.add_subparsers(dest="action",required=True)
     for name,helptext in [("run","Generate data, fit models, evaluate, and plot"),("plan","Show the resolved experiment grid"),
-                          ("pack","Archive experiment artifacts without cache files"),("tables","Generate LaTeX tables from this campaign"),("diagnose","Pointwise predictive checks from new fits")]:
+                          ("pack","Archive experiment artifacts without cache files"),("collect","Combine saved results and redraw figures without MCMC"),("tables","Generate LaTeX tables from this campaign"),("diagnose","Pointwise predictive checks from new fits")]:
         actions.add_parser(name,help=helptext,add_help=False)
     args,extra=parser.parse_known_args(argv)
     if args.group=="info":
@@ -34,6 +34,8 @@ def main(argv=None):
         if str(root) not in sys.path:sys.path.insert(0,str(root))
         if args.group=="paper" and args.action=="pack":
             return importlib.import_module("hb_experiments.artifacts").pack_cli(extra)
+        if args.group=="paper" and args.action=="collect":
+            return importlib.import_module("hb_experiments.final_collection").main(extra)
         if args.group=="paper":command={"run":"run","plan":"plan","tables":"tables","diagnose":"diagnose"}[args.action]
         else:command={"doctor":"doctor","check":"check"}[args.group]
         prog="hbayes "+args.group+(" "+args.action if getattr(args,"action",None) else "")

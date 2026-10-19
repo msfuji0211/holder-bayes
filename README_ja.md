@@ -65,6 +65,8 @@ HBAYES_TEST_MCMC=1 python -m unittest discover -s tests -p test_inference_smoke.
 
 実行時に生成する入力・キャッシュのハッシュは、破損や異なる設定での誤再開を検出するために維持しています。過去の検証済み結果のチェックサムとは独立です。既存の検証済み結果は必要に応じて別の成果物として管理でき、GitHubへの同梱は不要です。
 
-手法は [docs/API.md](docs/API.md)、実験手順は [docs/EXPERIMENTS.md](docs/EXPERIMENTS.md)、保存形式は [docs/OUTPUTS.md](docs/OUTPUTS.md) を参照してください。固定された過去の修正対象・回収手順を必要とするスクリプトは公開版から外しました。新規実験の診断不通過は、今回生成されるキューに記録されます。
+保存済み結果を別フォルダに統合し、`mcmc_final_collection` 相当のCSV・図を作る場合は `hbayes paper collect` または `scripts/run_final_collection.sh` を使えます。MCMCは実行しません。旧形式の入力も指定できます。手順は [docs/FINAL_COLLECTION_ja.md](docs/FINAL_COLLECTION_ja.md) にあります。
+
+手法は [docs/API.md](docs/API.md)、実験手順は [docs/EXPERIMENTS.md](docs/EXPERIMENTS.md)、保存形式は [docs/OUTPUTS.md](docs/OUTPUTS.md) を参照してください。固定された過去の修正対象を必要とする推論修正スクリプトは公開版から外しました。新規実験の診断不通過は、今回生成されるキューに記録されます。
 
 全1,170設定のMCMCはこの公開準備時には再実行していません。GitHubへのpushやPyPIへの登録も行っていません。公開時には著者の選ぶLICENSEと正式な論文引用を追加してください。

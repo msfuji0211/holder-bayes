@@ -95,7 +95,11 @@ def diagnostic_issues(payload, kind):
         if name == "GammaDiv" and (block.get("gamma_posterior_definition") != GAMMA_DEFINITION
                                    or block.get("sigma_min") != GAMMA_FLOOR or block.get("eta") != 1.):
             issues.append({"method": name, "issue": "gamma_target_definition"})
-        final_mh = name in ["DPD", "ExpSatDPD", "RatSatDPD", "GammaDiv"] and block.get("sampler") == "frozen_mixture_independence_mh"
+        final_mh = (name in ["DPD", "ExpSatDPD", "RatSatDPD", "GammaDiv"]
+                    and block.get("sampler") == "frozen_mixture_independence_mh")
+        # The saved repair workflow also used a fixed composition of MH
+        # transitions, including for Student-t; NUTS divergences do not apply.
+        final_mh = final_mh or block.get("sampler") == "verified_composed_mh"
         if not final_mh and block.get("nuts_divergences") != 0:
             issues.append({"method": name, "issue": "nuts_divergences", "value": block.get("nuts_divergences")})
     if not found:

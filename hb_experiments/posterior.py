@@ -10,14 +10,14 @@ def make_figure(module, sim, reg):
     bottom = outer[1].subgridspec(1,3, wspace=.12)
     sim_param, sim_eps = [fig.add_subplot(top[0,i]) for i in range(2)]
     intercept, reg_param, reg_eps = [fig.add_subplot(bottom[0,i]) for i in range(3)]
-    for case,ax,title in [(sim,sim_param,'(a) Simulation: location'),(reg,reg_param,'(d) Regression: slopes')]:
+    for case,ax,title in [(sim,sim_param,'Simulation: location'),(reg,reg_param,'Regression: slopes')]:
         for method in METHODS:
             info = case['methods'][method]
             module._draw_2d_kde_contour(ax,info['x'],info['y'],module.METHOD_STYLES[method]['color'])
         ax.axvline(case['truth']['x'],color='black',linestyle='--',lw=1.1)
         ax.axhline(case['truth']['y'],color='black',linestyle='--',lw=1.1)
         ax.set(xlabel=case['labels']['x'],ylabel=case['labels']['y'],title=title)
-    for case,ax,title in [(sim,sim_eps,'(b) Simulation: contamination'),(reg,reg_eps,'(e) Regression: contamination')]:
+    for case,ax,title in [(sim,sim_eps,'Simulation: contamination'),(reg,reg_eps,'Regression: contamination')]:
         module._draw_1d_kde(ax,case['methods']['DPD']['eps'],module.METHOD_STYLES['DPD']['color'],module.METHOD_DISPLAY['DPD'])
         ax.axvline(case['truth']['eps'],color='black',linestyle='--',lw=1.1)
         ax.set(xlabel=r'$\epsilon$',ylabel='Posterior density',title=title)
@@ -25,7 +25,7 @@ def make_figure(module, sim, reg):
         module._draw_1d_kde(intercept,reg['methods'][method]['intercept'],
             module.METHOD_STYLES[method]['color'],module.METHOD_DISPLAY[method])
     intercept.axvline(reg['truth']['intercept'],color='black',linestyle='--',lw=1.1)
-    intercept.set(xlabel=r'$\beta_0$',ylabel='Posterior density',title='(c) Regression: intercept')
+    intercept.set(xlabel=r'$\beta_0$',ylabel='Posterior density',title='Regression: intercept')
     for ax in [sim_param,sim_eps,intercept,reg_param,reg_eps]:
         ax.title.set_fontsize(14)
         ax.xaxis.label.set_fontsize(15); ax.yaxis.label.set_fontsize(15)

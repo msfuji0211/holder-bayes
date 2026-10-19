@@ -1,5 +1,10 @@
 """Replot appendix gamma grids from saved aggregate CSVs; never runs inference."""
 from pathlib import Path
+if __package__:
+    from .figure_export import save_figure
+else:
+    from figure_export import save_figure
+
 import argparse
 import hashlib
 import json
@@ -86,9 +91,10 @@ def render_gamma_sensitivity(results_root, figure_dir):
                 assert all(not legend_box.overlaps(ax.title.get_window_extent(renderer)) for ax in axes)
                 title_boxes = [ax.title.get_window_extent(renderer) for ax in axes]
                 assert all(not a.overlaps(b) for a, b in zip(title_boxes, title_boxes[1:]))
-                fig.savefig(output, dpi=260)
+                save_figure(fig, output, dpi=260)
                 plt.close(fig)
-                receipt[output.name] = dict(output_sha256=sha(output), values_changed=False,
+                receipt[output.name] = dict(output_sha256=sha(output), pdf_sha256=sha(output.with_suffix('.pdf')),
+                    png_dpi=600, panel_labels='uppercase', values_changed=False,
                     layout_regenerated_from_verified_csv=True, points=points,
                     source_csv_sha256=source_hashes, legend_and_titles_do_not_overlap=True)
     return receipt

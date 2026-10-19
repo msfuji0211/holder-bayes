@@ -1,5 +1,10 @@
 """Plotting functions depend only on source and this campaign's outputs."""
 import importlib
+if __package__:
+    from .figure_export import save_figure
+else:
+    from figure_export import save_figure
+
 import numpy as np
 
 DENSITY = 'exp1_simulation_gamma_sweep_gamma0p5/A/eps0.20/rep000'
@@ -24,5 +29,5 @@ def ranking(module,sim,reg,output):
                 d=df[(df.method==method)&(df.eps_true>0)].sort_values('eps_true')
                 ax.errorbar(d.eps_true,d.auprc_mean,yerr=d.auprc_std,label=label,color=color,marker=marker,capsize=3,lw=1.5)
             ax.set(title=name+rf' ($\gamma={g:g}$)',xlabel=r'True contamination $\epsilon_0$',ylabel='AUPRC',ylim=(.68,1.015));ax.set_xticks(sorted(df[df.eps_true>0].eps_true.unique()));ax.grid(alpha=.2)
-        handles,labels=axes[0].get_legend_handles_labels();fig.legend(handles,labels,loc='upper center',ncol=4,frameon=False,bbox_to_anchor=(.5,1.0));fig.savefig(output/'fig_appendix_ranking_only_comparison.png',dpi=240);plt.close(fig)
+        handles,labels=axes[0].get_legend_handles_labels();fig.legend(handles,labels,loc='upper center',ncol=4,frameon=False,bbox_to_anchor=(.5,1.0));save_figure(fig, output/'fig_appendix_ranking_only_comparison.png',dpi=240);plt.close(fig)
 

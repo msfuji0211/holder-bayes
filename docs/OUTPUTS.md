@@ -28,3 +28,5 @@ Per-setting native identifiers (gamma/contamination/replicate and recorded fit c
 `paper pack` excludes `cache/`, `calibration/`, staging directories, and native sample files by default. `--include-samples` includes `.npz` run samples, not fit caches. Standard figures may include representative posterior plotting arrays. Generated result archives are separate from the source distribution and are not needed to start a new experiment.
 
 `hbayes paper diagnose` writes `diagnostics/predictive/<dataset>/gamma_<value>/eps_<value>/` with pointwise CSVs, per-fit summaries, `split_metrics.csv`, `all_splits_aggregate.csv`, optional `sensitivity_aggregate.csv`, and a paired-diagnostic report. These are generated results; none is shipped with the source.
+
+The paper plotting workflow also writes a vector `.pdf` beside every `.png`. PNG exports use at least 600 dpi. Multipanel figures use uppercase panel labels, excluding colour bars. The public artifact-copying step retains both formats with matching descriptive stems.

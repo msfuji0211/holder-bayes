@@ -52,6 +52,8 @@ The source package can be published without either archive. Full MCMC is computa
 
 ## Tables
 
+To combine already saved runs (including optional rebuilt metric trees) in a separate directory without MCMC, use `hbayes paper collect --results-root /path/to/results --output-root results/collection`. The Python and bash launchers are `scripts/run_final_collection.py` and `scripts/run_final_collection.sh`. See [the saved-result collection guide](FINAL_COLLECTION_ja.md) for legacy input paths, required representative samples, and the `--no-plots` option. This post-processing command is independent of historical reference CSVs and manifests.
+
 `collect` and `plot` also export LaTeX tables from the new aggregate CSVs. To regenerate them independently:
 
 ```bash

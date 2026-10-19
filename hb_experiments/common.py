@@ -21,7 +21,7 @@ def write(path,value):
 def safe_output(path):
     p=Path(path).resolve()
     if p==ROOT or ROOT.is_relative_to(p):raise ValueError('Output cannot replace the repository or an ancestor')
-    for source in ['hbayes','experiments','configs','hb_experiments','tools','examples','tests','docs','.github']:
+    for source in ['hbayes','experiments','configs','hb_experiments','tools','scripts','examples','tests','docs','.github']:
         q=ROOT/source
         if p==q or p.is_relative_to(q) or q.is_relative_to(p):raise ValueError('Output overlaps a source directory')
     return p

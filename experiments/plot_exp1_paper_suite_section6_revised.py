@@ -10,6 +10,7 @@ import pandas as pd
 from scipy.stats import gaussian_kde
 
 sys.path.append(str(Path(__file__).resolve().parents[1]))
+from hb_experiments.figure_export import save_figure
 
 from experiments.paper_plot_paths import (
     discover_gamma_dirs,
@@ -190,7 +191,7 @@ def plot_main_simulation_figure(df_sim: pd.DataFrame, gamma: float, scenario: st
     axes[2].axhline(0.95, color="k", linestyle="--", linewidth=1.1)
     axes[2].set_ylim(0.0, 1.05)
     fig.tight_layout()
-    fig.savefig(output_path, bbox_inches="tight", dpi=200)
+    save_figure(fig, output_path, bbox_inches="tight", dpi=200)
     plt.close(fig)
 
 
@@ -221,7 +222,7 @@ def plot_main_regression_performance_figure(df_eps: pd.DataFrame, gamma: float, 
         ylabel="AUPRC",
     )
     fig.tight_layout()
-    fig.savefig(output_path, bbox_inches="tight", dpi=200)
+    save_figure(fig, output_path, bbox_inches="tight", dpi=200)
     plt.close(fig)
 
 
@@ -256,7 +257,7 @@ def plot_main_regression_epsilon_figure(df_eps: pd.DataFrame, gamma: float, outp
     axes[1].axhline(0.95, color="k", linestyle="--", linewidth=1.1)
     axes[1].set_ylim(0.0, 1.05)
     fig.tight_layout()
-    fig.savefig(output_path, bbox_inches="tight", dpi=200)
+    save_figure(fig, output_path, bbox_inches="tight", dpi=200)
     plt.close(fig)
 
 
@@ -299,7 +300,7 @@ def plot_gamma_grid(
     if handles:
         fig.legend(handles, labels, loc="upper center", ncol=min(len(labels), 6), frameon=True, fontsize=LEGEND_FONTSIZE)
     fig.tight_layout(rect=(0, 0, 1, 0.92))
-    fig.savefig(output_path, bbox_inches="tight", dpi=200)
+    save_figure(fig, output_path, bbox_inches="tight", dpi=200)
     plt.close(fig)
 
 
@@ -375,7 +376,7 @@ def plot_kappa_ablation_heatmaps(
         _heatmap_panel(axes[0, idx], mat, kappas, gammas, panel_title, cmap)
     fig.suptitle(title, fontsize=TITLE_FONTSIZE)
     fig.tight_layout(rect=(0, 0, 1, 0.95))
-    fig.savefig(output_path, bbox_inches="tight", dpi=200)
+    save_figure(fig, output_path, bbox_inches="tight", dpi=200)
     plt.close(fig)
 
 
@@ -682,7 +683,7 @@ def plot_joint_posterior_comparison(cases, *, title: str, output_path: Path) -> 
     fig.legend(handles=handles, loc="upper center", ncol=min(len(handles), 5), frameon=True, fontsize=LEGEND_FONTSIZE)
     fig.suptitle(title, fontsize=TITLE_FONTSIZE)
     fig.tight_layout(rect=(0, 0, 1, 0.92))
-    fig.savefig(output_path, bbox_inches="tight", dpi=220)
+    save_figure(fig, output_path, bbox_inches="tight", dpi=220)
     plt.close(fig)
 
 def load_regression_outlier_case(outputs_root: Path, gamma: float, condition: str, eps: float, rep: int):
@@ -893,7 +894,7 @@ def generate_outlier_visualizations(args, outputs_root: Path, main_dir: Path, ap
         )
         fig.colorbar(sc, ax=ax, shrink=0.75, pad=0.08, label="DPD outlier probability")
         fig.tight_layout()
-        fig.savefig(
+        save_figure(fig, 
             main_dir / f"fig_main_regression_outlier3d_{args.regression_condition}_eps{eps_tag}_gamma{format_gamma_tag(args.regression_main_gamma)}.png",
             bbox_inches="tight",
             dpi=220,
@@ -917,7 +918,7 @@ def generate_outlier_visualizations(args, outputs_root: Path, main_dir: Path, ap
         )
         fig.colorbar(sc, ax=ax, label="DPD outlier probability")
         fig.tight_layout()
-        fig.savefig(
+        save_figure(fig, 
             main_dir / f"fig_main_simulation_outlier2d_{args.simulation_scenario}_eps{eps_tag}_gamma{format_gamma_tag(args.simulation_main_gamma)}.png",
             bbox_inches="tight",
             dpi=220,
@@ -951,7 +952,7 @@ def generate_outlier_visualizations(args, outputs_root: Path, main_dir: Path, ap
         fig.colorbar(last_sc, ax=axs, shrink=0.75, pad=0.04, label="DPD outlier probability")
         fig.suptitle(rf"Regression outlier probabilities ({args.regression_condition}, $\epsilon={eps:.2f}$)", fontsize=TITLE_FONTSIZE)
         fig.tight_layout(rect=(0, 0, 1, 0.94))
-        fig.savefig(
+        save_figure(fig, 
             appendix_dir / f"fig_appendix_regression_outlier3d_{args.regression_condition}_eps{eps_tag}_gammas.png",
             bbox_inches="tight",
             dpi=220,
@@ -979,7 +980,7 @@ def generate_outlier_visualizations(args, outputs_root: Path, main_dir: Path, ap
         fig.colorbar(last_sc, ax=axes[0], shrink=0.9, pad=0.02, label="DPD outlier probability")
         fig.suptitle(rf"Simulation outlier probabilities ({args.simulation_scenario}, $\epsilon={eps:.2f}$)", fontsize=TITLE_FONTSIZE)
         fig.tight_layout(rect=(0, 0, 1, 0.93))
-        fig.savefig(
+        save_figure(fig, 
             appendix_dir / f"fig_appendix_simulation_outlier2d_{args.simulation_scenario}_eps{eps_tag}_gammas.png",
             bbox_inches="tight",
             dpi=220,
@@ -1202,7 +1203,7 @@ def _plot_likelihood_selection_figure(
         _plot_selected_points_panel_3d(ax_points, x_for_panel, y_for_panel, order, k_stats, truth_mask, title="Points selected by ranking threshold")
     fig.suptitle(title, fontsize=TITLE_FONTSIZE)
     fig.tight_layout(rect=(0, 0, 1, 0.95))
-    fig.savefig(output_path, bbox_inches="tight", dpi=220)
+    save_figure(fig, output_path, bbox_inches="tight", dpi=220)
     plt.close(fig)
 
 
@@ -1236,7 +1237,7 @@ def generate_likelihood_ranking_visualizations(args, outputs_root: Path, main_di
             fig.colorbar(last_sc, ax=axes[1, :].tolist(), shrink=0.9, pad=0.02, label="FoD")
         fig.suptitle(rf"Regression audit-budget and FoD sensitivity ($\epsilon_0={eps:.2f}$)", fontsize=TITLE_FONTSIZE)
         fig.tight_layout(rect=(0, 0, 0.98, 0.95))
-        fig.savefig(
+        save_figure(fig, 
             appendix_dir / f"fig_appendix_regression_audit_fod_{args.regression_condition}_eps{eps_tag}_gammas.png",
             bbox_inches="tight", dpi=220,
         )
@@ -1266,7 +1267,7 @@ def generate_likelihood_ranking_visualizations(args, outputs_root: Path, main_di
             fig.colorbar(last_sc, ax=axes[1, :].tolist(), shrink=0.9, pad=0.02, label="FoD")
         fig.suptitle(rf"Simulation audit-budget and FoD sensitivity ($\epsilon_0={eps:.2f}$)", fontsize=TITLE_FONTSIZE)
         fig.tight_layout(rect=(0, 0, 0.98, 0.95))
-        fig.savefig(
+        save_figure(fig, 
             appendix_dir / f"fig_appendix_simulation_audit_fod_{args.simulation_scenario}_eps{eps_tag}_gammas.png",
             bbox_inches="tight", dpi=220,
         )
@@ -1412,7 +1413,7 @@ def create_main_fig1_posterior(args, outputs_root: Path, main_dir: Path) -> None
     legend_handles.append(plt.Line2D([0], [0], color="black", linestyle="--", lw=1.2, label="True value"))
     fig.legend(legend_handles, [h.get_label() for h in legend_handles], loc="upper center", ncol=3, frameon=True, fontsize=LEGEND_FONTSIZE)
     fig.tight_layout(rect=(0, 0, 1, 0.94))
-    fig.savefig(main_dir / "fig1_posterior_regression_simulation.png", bbox_inches="tight", dpi=220)
+    save_figure(fig, main_dir / "fig1_posterior_regression_simulation.png", bbox_inches="tight", dpi=220)
     plt.close(fig)
 
 
@@ -1480,7 +1481,7 @@ def create_main_fig2_accuracy(args, outputs_root: Path, main_dir: Path, df_sim: 
         ax.yaxis.label.set_size(LABEL_FONTSIZE)
         ax.tick_params(axis="both", labelsize=TICK_FONTSIZE)
     fig.tight_layout(rect=(0, 0, 1, 0.93))
-    fig.savefig(main_dir / "fig2_accuracy_regression_simulation.png", bbox_inches="tight", dpi=220)
+    save_figure(fig, main_dir / "fig2_accuracy_regression_simulation.png", bbox_inches="tight", dpi=220)
     plt.close(fig)
 
 
@@ -1523,7 +1524,7 @@ def create_main_fig3_likelihood(args, outputs_root: Path, main_dir: Path) -> Non
         pass
 
     fig.tight_layout()
-    fig.savefig(main_dir / "fig3_likelihood_selection_combined.png", bbox_inches="tight", dpi=220)
+    save_figure(fig, main_dir / "fig3_likelihood_selection_combined.png", bbox_inches="tight", dpi=220)
     plt.close(fig)
 
 def create_appendix_phi_sensitivity(
@@ -1590,7 +1591,7 @@ def create_appendix_phi_sensitivity(
     if handles:
         fig.legend(handles, labels, loc="upper center", ncol=max(1, len(labels)), frameon=True, fontsize=LEGEND_FONTSIZE)
     fig.tight_layout(rect=(0, 0, 1, 0.94))
-    fig.savefig(appendix_dir / "fig_appendix_phi_sensitivity.png", bbox_inches="tight", dpi=220)
+    save_figure(fig, appendix_dir / "fig_appendix_phi_sensitivity.png", bbox_inches="tight", dpi=220)
     plt.close(fig)
 
 
@@ -1650,7 +1651,7 @@ def create_appendix_ranking_only_comparison(
         y=1.02,
     )
     fig.tight_layout(rect=(0, 0, 1, 0.90))
-    fig.savefig(appendix_dir / "fig_appendix_ranking_only_comparison.png", bbox_inches="tight", dpi=220)
+    save_figure(fig, appendix_dir / "fig_appendix_ranking_only_comparison.png", bbox_inches="tight", dpi=220)
     plt.close(fig)
 
 

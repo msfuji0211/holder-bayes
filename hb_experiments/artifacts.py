@@ -52,9 +52,10 @@ def _figures(source,target):
     copied=[]
     for path in sorted(source.rglob('*')) if source.is_dir() else []:
         if not path.is_file():continue
-        if path.name in FIGURES:
-            section='main' if path.name.startswith(('fig1_','fig2_','fig3_')) else 'appendix'
-            dest=target/section/FIGURES[path.name]
+        figure_key = path.with_suffix('.png').name if path.suffix == '.pdf' else path.name
+        if figure_key in FIGURES:
+            section='main' if figure_key.startswith(('fig1_','fig2_','fig3_')) else 'appendix'
+            dest=target/section/Path(FIGURES[figure_key]).with_suffix(path.suffix)
         elif path.name in ['posterior_summary.csv','main_posterior_plot_inputs.npz']:
             dest=target/'main'/('posterior_inputs.npz' if path.suffix=='.npz' else 'posterior_summary.csv')
         else:continue

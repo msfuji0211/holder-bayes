@@ -16,6 +16,7 @@ def campaign(root):
         for job in jobs(a, phase):
             e, g, rep = job['eps'], job['gamma'], job['rep']
             payload = dict(dataset=job['dataset'], gamma=g, eps_true=e, replicate=rep, rep=rep,
+                           run_config=dict(gamma=g),
                            mu_out=0. if e == 0 else 6., n_train=100, n_test=40,
                            temperature_version='generated_test_fixture', contamination_mode='intercept_shift')
             def block(offset):

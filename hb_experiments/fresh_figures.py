@@ -1,5 +1,10 @@
 """Apply the current figure layout to new fits, without reference-result draws."""
 from pathlib import Path
+if __package__:
+    from .figure_export import save_figure
+else:
+    from figure_export import save_figure
+
 import numpy as np
 from .common import read,write,sha
 from types import SimpleNamespace
@@ -56,7 +61,7 @@ def posterior_from_results(results,output):
     output.mkdir(parents=True,exist_ok=True)
     figure=intercept.make_figure(module,sim,reg)
     path=output/'fig1_posterior_regression_simulation.png'
-    figure.savefig(path,dpi=220,bbox_inches='tight');module.plt.close(figure)
+    save_figure(figure, path,dpi=220,bbox_inches='tight');module.plt.close(figure)
     import pandas as pd
     summary=intercept.summary_rows(sim,reg)
     pd.DataFrame(summary).to_csv(output/'posterior_summary.csv',index=False)
@@ -90,8 +95,12 @@ def finish(results):
               'simulation_auprc_gamma_grid.png','regression_rmse_test_gamma_grid.png',
               'regression_eps_post_mean_gamma_grid.png','regression_auprc_gamma_grid.png']]
     for p in paths:module.plt.imread(p)
+    paths += [p.with_suffix('.pdf') for p in paths]
+    for p in paths:
+        if not p.is_file():raise FileNotFoundError(p)
     report=dict(status='passed',source='new_campaign',
-                new_representative_inputs=posterior['inputs'],figures=11,regression_intercept_included=True,
+                new_representative_inputs=posterior['inputs'],figures=11,figure_files=22,formats=['png','pdf'],png_dpi=600,
+                panel_labels='uppercase',regression_intercept_included=True,
                 figure_sha256={str(p.relative_to(target)):sha(p) for p in paths})
     write(target/'fresh_figure_receipt.json',report);write(target/'gamma_values.json',gamma)
     return report
