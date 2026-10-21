@@ -1,6 +1,6 @@
 # Hölder–Bayes
 
-Python implementation of Hölder–Bayes inference and probabilistic outlier auditing. The library fits Gaussian location–scale and linear regression models, jointly estimates the contamination/audit fraction, and computes observation-level posterior flagging frequencies. The repository also contains data generators, experiment runners, collectors and plots for the accompanying paper. No fitted samples, result CSVs, reference images or historical checksum inventories are shipped or required.
+Python implementation of Hölder–Bayes inference and probabilistic outlier auditing, accompanying the paper [Generalised Robust Bayes for Joint Inference of Model and Contamination](https://arxiv.org/abs/2607.25665) ([arXiv:2607.25665](https://arxiv.org/abs/2607.25665)). The library fits Gaussian location–scale and linear regression models, jointly estimates the contamination/audit fraction, and computes observation-level posterior flagging frequencies. The repository also contains data generators, experiment runners, collectors and plots for the paper experiments. No fitted samples, result CSVs, reference images or historical checksum inventories are shipped or required.
 
 ## Installation
 
@@ -81,4 +81,20 @@ The complete original transitive dependency lock and hardware/BLAS build informa
 
 ## License and citation
 
-This software is released under the [MIT License](LICENSE). Add the final paper citation before public distribution.
+This software is released under the [MIT License](LICENSE).
+
+The accompanying paper is [Generalised Robust Bayes for Joint Inference of Model and Contamination](https://arxiv.org/abs/2607.25665) (arXiv:2607.25665). If you use this code, please cite:
+
+```bibtex
+@misc{fujisawa2026holder,
+  title={Generalised Robust Bayes for Joint Inference of Model and Contamination},
+  author={Fujisawa, Masahiro and Adachi, Masaki and Matsubara, Takuo},
+  year={2026},
+  eprint={2607.25665},
+  archivePrefix={arXiv},
+  primaryClass={stat.ME},
+  url={https://arxiv.org/abs/2607.25665},
+  doi={10.48550/arXiv.2607.25665},
+}
+```
+
