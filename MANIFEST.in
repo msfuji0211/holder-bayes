@@ -1,4 +1,4 @@
-include README.md README_ja.md pyproject.toml requirements-experiments.txt run_experiments.py
+include LICENSE README.md README_ja.md pyproject.toml requirements-experiments.txt run_experiments.py
 recursive-include hbayes *.py
 recursive-include hb_experiments *.py
 recursive-include experiments *.py

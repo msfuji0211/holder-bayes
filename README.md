@@ -81,4 +81,4 @@ The complete original transitive dependency lock and hardware/BLAS build informa
 
 ## License and citation
 
-Add the authors' selected software license and the final paper citation before public distribution. No license or author list has been assigned on their behalf. This archive has not been pushed to GitHub or uploaded to PyPI.
+This software is released under the [MIT License](LICENSE). Add the final paper citation before public distribution.

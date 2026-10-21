@@ -69,4 +69,8 @@ HBAYES_TEST_MCMC=1 python -m unittest discover -s tests -p test_inference_smoke.
 
 手法は [docs/API.md](docs/API.md)、実験手順は [docs/EXPERIMENTS.md](docs/EXPERIMENTS.md)、保存形式は [docs/OUTPUTS.md](docs/OUTPUTS.md) を参照してください。固定された過去の修正対象を必要とする推論修正スクリプトは公開版から外しました。新規実験の診断不通過は、今回生成されるキューに記録されます。
 
-全1,170設定のMCMCはこの公開準備時には再実行していません。GitHubへのpushやPyPIへの登録も行っていません。公開時には著者の選ぶLICENSEと正式な論文引用を追加してください。
+全1,170設定のMCMCはこの公開準備時には再実行していません。GitHubへのpushやPyPIへの登録も行っていません。
+
+## ライセンスと引用
+
+本ソフトウェアは [MIT License](LICENSE) の下で公開されています。公開前に正式な論文引用を追加してください。
