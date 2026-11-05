@@ -1,0 +1,48 @@
+{
+  "sampler": {
+    "chains": 2,
+    "warmup": 40,
+    "draws": 40,
+    "repair_draws": []
+  },
+  "optimizer": {
+    "starts": 4,
+    "bootstrap_starts": 3,
+    "maxiter": 300
+  },
+  "scoring": {
+    "max_draws": 80
+  },
+  "direct": {
+    "n": 60,
+    "n_test": 100,
+    "density_eps": [
+      0.2
+    ],
+    "regression_eps": [
+      0.2
+    ],
+    "replicates": 1,
+    "benchmark": false,
+    "bootstrap_B": 4,
+    "cleaning_refit": "ols"
+  },
+  "costs": {
+    "sample_sizes": [
+      50
+    ],
+    "dimensions": [
+      1
+    ],
+    "shifts": [
+      2.5,
+      6.0
+    ],
+    "gammas": [
+      0.5
+    ],
+    "replicates": 1,
+    "bootstrap_B": 4,
+    "clean_controls": true
+  }
+}

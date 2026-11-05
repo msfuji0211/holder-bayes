@@ -1,0 +1,28 @@
+{
+  "sampler": {
+    "warmup": 2000,
+    "draws": 2000,
+    "repair_draws": [
+      4000
+    ]
+  },
+  "direct": {
+    "density_eps": [
+      0,
+      0.2,
+      0.4
+    ],
+    "regression_eps": [
+      0,
+      0.2,
+      0.4
+    ],
+    "replicates": 3,
+    "benchmark": false,
+    "cleaning_refit": "ols"
+  },
+  "costs": {
+    "replicates": 3,
+    "bootstrap_B": 50
+  }
+}
