@@ -1,0 +1,33 @@
+{
+  "purpose": "main",
+  "seed": 42,
+  "datasets": ["cal_housing", "kin8nm", "pumadyn32fh"],
+  "replicates": 5,
+  "train_size": 0,
+  "gamma": 0.5,
+  "injection_probability": 0.2,
+  "shifts": [2.5, 6.0],
+  "include_no_injection": true,
+  "bootstrap_B": 200,
+  "kf_starts": 16,
+  "bootstrap_starts": 8,
+  "sampler": {
+    "chains": 4,
+    "warmup": 4000,
+    "draws": 4000,
+    "repair_draws": 8000,
+    "target_accept": 0.99,
+    "initial_step": 0.1,
+    "rhat_max": 1.01,
+    "ess_min": 400,
+    "max_fod_draws": 2000
+  },
+  "costs": {
+    "false_remove": 5.0,
+    "miss": 1.0,
+    "review": 0.1,
+    "shortage": 1.0,
+    "false_remove_grid": [1.0, 5.0, 10.0],
+    "review_grid": [0.1, 0.5]
+  }
+}

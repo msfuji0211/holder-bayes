@@ -1,0 +1,15 @@
+{
+  "purpose": "pilot",
+  "replicates": 1,
+  "train_size": 500,
+  "bootstrap_B": 30,
+  "kf_starts": 8,
+  "bootstrap_starts": 4,
+  "sampler": {
+    "warmup": 800,
+    "draws": 800,
+    "repair_draws": 0,
+    "ess_min": 100,
+    "max_fod_draws": 800
+  }
+}
