@@ -116,8 +116,10 @@ def cli(argv=None):
         if cmd == "run":
             p.add_argument("--output-dir", type=Path, required=True)
             source = p.add_mutually_exclusive_group()
-            source.add_argument("--local-data-dir", type=Path)
-            source.add_argument("--download-data", action="store_true")
+            source.add_argument("--local-data-dir", type=Path,
+                                help="Existing directory containing the benchmark NPZ, CSV or TSV files")
+            source.add_argument("--download-data", action="store_true",
+                                help="Fetch missing inputs from the documented public sources")
             p.add_argument("--require-gpu", action="store_true")
             p.add_argument("--finalize", action="store_true", help="Summarise after the selected jobs finish")
     p = sub.add_parser("summarize")
@@ -136,16 +138,34 @@ def cli(argv=None):
     existing = out/"manifest.json"
     c = d.read_json(existing)["config"] if args.config is None and existing.exists() else d.config(args.config)
     jobs = select_jobs(c, args)
+    names = list(dict.fromkeys(j["dataset"] for j in jobs))
+    local_dir = args.local_data_dir.expanduser() if args.local_data_dir is not None else None
+    try:
+        d.preflight_inputs(out, names, local_dir, args.download_data)
+    except FileNotFoundError as exc:
+        parser.error(str(exc))
     state = fitting_runtime()
     if args.require_gpu:
         import jax
         if not any(x.platform in {"gpu", "cuda", "rocm"} for x in jax.devices()):
             raise RuntimeError("No GPU in jax.devices(); check your JAX installation and device visibility")
     print(f"JAX devices: {state['jax_devices']}; {len(jobs)} selected jobs", flush=True)
-    manifest = d.open_run(out, c)
+    try:
+        manifest = d.open_run(out, c)
+    except ValueError as exc:
+        parser.error(str(exc))
+    inputs = {}
+    for name in names:
+        print(f"Checking benchmark input: {name}", flush=True)
+        try:
+            inputs[name] = d.dataset(out, name, local_dir, args.download_data)
+        except (OSError, ValueError, RuntimeError, KeyError) as exc:
+            hint = ("Check network access or use the benchmark cache with --local-data-dir."
+                    if args.download_data else "Check the benchmark file name, contents and row order.")
+            parser.exit(1, f"{parser.prog}: could not load {name}: {exc}. {hint}\n")
     failed = 0
     for name, group in itertools.groupby(jobs, key=lambda j: j["dataset"]):
-        x, y = d.dataset(out, name, args.local_data_dir, args.download_data)
+        x, y = inputs[name]
         for rep, same in itertools.groupby(group, key=lambda j: j["replicate"]):
             split = None
             for job in same:

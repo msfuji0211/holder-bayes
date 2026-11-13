@@ -182,6 +182,34 @@ def open_run(out, c):
     return v
 
 
+def frozen_dataset(out, name):
+    path = out / "datasets" / f"{name}.npz"
+    return path.is_file() and path.with_suffix(".json").is_file()
+
+
+def local_candidates(directory, name):
+    return tuple(directory / f"{name}.{ext}" for ext in ("npz", "csv", "tsv"))
+
+
+def preflight_inputs(out, names, local_dir, allow_download):
+    """Check all selected local sources before initialising the sampler or run."""
+    needed = [name for name in names if not frozen_dataset(out, name)]
+    if not needed or allow_download:
+        return
+    help_text = ("Point --local-data-dir to the directory containing the benchmark files, "
+                 "or replace it with --download-data for public sources.")
+    if local_dir is None:
+        raise FileNotFoundError(f"No frozen inputs for {', '.join(needed)}. {help_text}")
+    if not local_dir.is_dir():
+        hint = (" /path/to/benchmark_inputs is an example, not an installed dataset directory."
+                if local_dir == Path("/path/to/benchmark_inputs") else "")
+        raise FileNotFoundError(f"Input directory does not exist: {local_dir}.{hint} {help_text}")
+    missing = [name for name in needed if not any(p.is_file() for p in local_candidates(local_dir, name))]
+    if missing:
+        expected = "; ".join(" or ".join(p.name for p in local_candidates(local_dir, name)) for name in missing)
+        raise FileNotFoundError(f"Missing benchmark files in {local_dir}: {expected}. {help_text}")
+
+
 def dataset(out, name, local_dir=None, allow_download=False):
     """Freeze the input rows and their order on first use in this run."""
     from hb_experiments.native_run import validate_dataset
@@ -195,19 +223,26 @@ def dataset(out, name, local_dir=None, allow_download=False):
             if [array_hash(x), array_hash(y)] != meta["hashes"]:
                 raise ValueError(f"Frozen {name} input differs from its recorded hashes")
             return x, y
-        if local_dir is not None and (local_dir / f"{name}.npz").is_file():
-            origin = local_dir / f"{name}.npz"
-            z = read_npz(origin)
-            x, y = z["X"], z["y"]
+        preflight_inputs(out, [name], local_dir, allow_download)
+        if local_dir is not None:
+            origin = next((p for p in local_candidates(local_dir, name) if p.is_file()), None)
+            if origin is None:
+                raise FileNotFoundError(f"No local file for {name} in {local_dir}")
+            if origin.suffix == ".npz":
+                z = read_npz(origin)
+                if not {"X", "y"} <= z.keys():
+                    raise ValueError(f"{origin} must contain the arrays X and y")
+                x, y = z["X"], z["y"]
+            else:
+                from experiments.exp1_regression.run_exp1_realdata_benchmark import load_benchmark_dataset
+                x, y = load_benchmark_dataset(name, str(local_dir))
+            source = {"source": str(origin)}
         else:
-            if local_dir is None and not allow_download:
-                raise FileNotFoundError("Choose --local-data-dir or --download-data for benchmark inputs.")
-            from experiments.exp1_regression.run_exp1_realdata_benchmark import load_benchmark_dataset
-            x, y = load_benchmark_dataset(name, None if local_dir is None else str(local_dir))
-            origin = local_dir if local_dir is not None else "upstream_benchmark_loader"
+            from .data_sources import download
+            x, y, source = download(name)
         x, y = validate_dataset(name, np.asarray(x, dtype=float), np.asarray(y, dtype=float))
         write_npz(path, X=x, y=y)
-        write_json(receipt, {"source": str(origin), "hashes": [array_hash(x), array_hash(y)],
+        write_json(receipt, {**source, "hashes": [array_hash(x), array_hash(y)],
                              "shape": list(x.shape)})
         return x, y
 
